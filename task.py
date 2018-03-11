@@ -42,7 +42,7 @@ def to_float(result_list):
     return float_list
 
 
-def csv_reader(file_obj):
+def csv_reader(variables_file):
     """
     Чтение данных их csv файла
     Входные параметры:
@@ -52,12 +52,16 @@ def csv_reader(file_obj):
 
     """
 
-    reader = csv.reader(file_obj)
-    result_list = list()
-    for row in reader:
-        result_list.append(row)
+    reader = csv.reader(open(variables_file, 'r'))
+    dict_list = []
 
-    return to_float(result_list[0])
+    for line in reader:
+        dict_list.append(line)
+
+    dict_list = dict_list[0][0]
+    dict_list = dict_list.split(";")
+
+    return dict_list
 
 
 def CreateSpecialMassive(massiv, delitel):
@@ -342,9 +346,11 @@ def draw_plot(chisla, complexity_array, parametr, number_of_point):
 
 if __name__ == "__main__":
 
-    csv_path = "volts.csv" # Файл, который откроется в системе
-    with open(csv_path, "r") as f_obj:
-        res = csv_reader(f_obj)
+    csv_path = "5000.csv" # Файл, который откроется в системе
+    # with open(csv_path, "r") as f_obj:
+    #     res = csv_reader(f_obj)
+
+    res = csv_reader(csv_path)
 
     chisla = to_float(res)
     print("Считаный из файла массив")
@@ -353,7 +359,7 @@ if __name__ == "__main__":
 
     # number = int(input("Введите число для разбиение в последовательности (2,3...) - "))
     
-    number = 2 # число для разбиения последовательности
+    number = 5 # число для разбиения последовательности
 
     type_of_calculation = 2 # (1 - без перекрытия, 2 - с перекрытием)
 
