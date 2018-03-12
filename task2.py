@@ -204,6 +204,55 @@ def create_psi_massive(norman_array, cArray):
 
     return psiArray
 
+def draw_plot(chisla, complexity_array, parametr, number_of_point=2):
+    """
+    Функция для построения графика из функции сложности
+    complexity_array - последовательность с функцие сложности 
+    parametr - порог срабатывания
+    number_of_point - количество точек в разбиении стартовой последовательности
+    этот параметр только для выовда на экран
+    Функция ничего не возвращает, только строит график
+    """
+
+    plt.subplot(211)
+    plt.plot(complexity_array)
+    plt.title('Функция сложности для ' + str(number_of_point) + ' точек в разбиении')
+    indexes = [parametr] * len(complexity_array)
+    porog = "Порог срабатывания " + str(parametr)
+    plt.plot(indexes, 'r-', lw=2, label=porog)
+
+    special_area_indexes = []
+
+    print("Индексы для выделения!")
+
+    for i in range(0, len(complexity_array)):
+        if complexity_array[i] < parametr:
+            special_area_indexes.append(i)
+            print(i)
+
+    plt.grid(True)
+    plt.xlabel('Номер столбца')
+    plt.ylabel('Значение функции сложности')
+    plt.legend()
+
+
+    plt.subplot(212)
+    plt.title('Результирующий график')
+    plt.plot(chisla)
+
+    # special_area_indexes = special_trim(special_area_indexes)
+
+    # for i in range(0, len(special_area_indexes),2):
+    #     if i + 1 != len(special_area_indexes):
+    #         plt.axvspan(special_area_indexes[i], special_area_indexes[i + 1], \
+    #             color='red', alpha=0.1)
+
+    plt.grid(True)
+    plt.xlabel('Номер столбца')
+    plt.ylabel('Значение функции сложности')
+
+    plt.show()
+
 
 with Profiler() as p:
 
@@ -225,3 +274,5 @@ with Profiler() as p:
         psiArray = create_psi_massive(norman_array, cArray)
 
         print(math.sqrt(sum(psiArray)))
+
+        draw_plot(chisla, psiArray, 0)
